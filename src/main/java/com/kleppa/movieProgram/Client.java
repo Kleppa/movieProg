@@ -13,6 +13,7 @@ import org.json.*;
  * Created by Kleppa on 14/02/2017.
  */
 public class Client {
+    private ArrayList<JSONObject> jsonArr=new ArrayList<JSONObject>();
     private Scanner sc;
     private String movieTitle=null;
     private final String site="http://www.omdbapi.com/?";
@@ -20,13 +21,9 @@ public class Client {
     private String[] infoContent={"Title","Year","Rated","Released","Runtime", "Genre","Director","Writer",
     "Actors","Plot","Language","Country","Awards","Metascore","imdbRating","imdbVotes"};
 
-    Client(String movieTitle){
-     this.movieTitle = movieTitle;
-        try {
-            unparsedJson.add(getHTML(this.movieTitle));
-        }catch (Exception e){
-            System.out.println("getHtml error");
-        }
+    Client(){
+
+
         menu();
     }
 
@@ -50,36 +47,67 @@ public class Client {
         int choice=sc.nextInt();
         switch (choice){
             case 1:
-                movieInfo();
+                addMovie();
                 break;
             case 2:
+                movieInfo();
+                break;
+            case 3:
                 compareMovies();
                 break;
         }
 
     }
 
-    private void compareMovies() {
-        try {
-            unparsedJson.add(getHTML(sc.nextLine()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private String compareMovies() {
+        String metaResult="";
+        String imdbResult="";
 
+        int metascore=0;
+        double imdbRating=0;
+        for (JSONObject jObj:jsonArr) {
+
+        if(Integer.parseInt(jObj.getString(infoContent[13]))>metascore){
+            metascore=Integer.parseInt(jObj.getString(infoContent[13]));
+            metaResult=jObj.getString(infoContent[0]+" has the highest metascore with " + metascore);
+
+        }
+        if(Double.parseDouble(jObj.getString(infoContent[13]))>imdbRating){
+
+            }
+
+        }
+        return metaResult;
     }
 
     public void menuChoice(){
-        System.out.println("1 - About Movie");
-        System.out.println("2 - Compare Movies");
+
+        System.out.println("1 - Find Movie");
+        System.out.println("2 - Info about Movie");
+        System.out.println("2 - Compare Movies (Remember to find 2 Movies to compare )");
 
     }
     public void movieInfo(){
             //get riktig index
-
-        JSONObject jsonObject = new JSONObject(unparsedJson.get(0));
-
-        for(int i =0; i<infoContent.length;i++){
-        System.out.println(jsonObject.getString(infoContent[i]));
+        if(!unparsedJson.isEmpty()) {
+            JSONObject jsonObject = new JSONObject(unparsedJson.get(0));
+            jsonArr.add(jsonObject);
+            for (int i = 0; i < infoContent.length; i++) {
+                System.out.println(jsonObject.getString(infoContent[i]));
             }
+        }else{
+            System.out.println("Choose a movie first");
+        }
     }
+    public void addMovie(){
+        movieTitle=sc.nextLine();
+        try {
+            unparsedJson.add(getHTML(this.movieTitle));
+
+
+        }catch (Exception e){
+            System.out.println("getHtml error");
+        }
+    }
+
 }

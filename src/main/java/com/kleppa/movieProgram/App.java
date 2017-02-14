@@ -7,7 +7,7 @@ package com.kleppa.movieProgram;
 public class App {
     public static void main( String[] args ) {
 
-    Client client = new Client("300");
+    Client client = new Client();
     }
 
 }
