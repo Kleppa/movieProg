@@ -13,6 +13,7 @@ import org.json.*;
  * Created by Kleppa on 14/02/2017.
  */
 public class Client {
+
     private ArrayList<JSONObject> jsonArr=new ArrayList<JSONObject>();
     private Scanner sc;
     private String movieTitle=null;
@@ -20,7 +21,6 @@ public class Client {
     private ArrayList<String> unparsedJson=new ArrayList<String>();
     private String[] infoContent={"Title","Year","Rated","Released","Runtime", "Genre","Director","Writer",
     "Actors","Plot","Language","Country","Awards","Metascore","imdbRating","imdbVotes"};
-
     Client(){
 
 
@@ -43,20 +43,28 @@ public class Client {
 
     public void menu(){
         menuChoice();;
-        sc = new Scanner(System.in);
-        int choice=sc.nextInt();
-        switch (choice){
-            case 1:
-                addMovie();
-                break;
-            case 2:
-                movieInfo();
-                break;
-            case 3:
-                compareMovies();
-                break;
-        }
 
+        sc = new Scanner(System.in);
+        int choice=99;
+
+
+        while(choice!=0) {
+            System.out.println("Please enter a choice");
+            //problem with choice taking all the input
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    addMovie();
+                    break;
+                case 2:
+                    movieInfo();
+                    break;
+                case 3:
+                    compareMovies();
+                    break;
+            }
+
+        }
     }
 
     private String compareMovies() {
@@ -67,24 +75,28 @@ public class Client {
         double imdbRating=0;
         for (JSONObject jObj:jsonArr) {
 
-        if(Integer.parseInt(jObj.getString(infoContent[13]))>metascore){
-            metascore=Integer.parseInt(jObj.getString(infoContent[13]));
-            metaResult=jObj.getString(infoContent[0]+" has the highest metascore with " + metascore);
+          if(Integer.parseInt(jObj.getString(infoContent[13]))>metascore){
+                metascore=Integer.parseInt(jObj.getString(infoContent[13]));
+                metaResult=jObj.getString(infoContent[0])+" has the highest metascore with " + metascore;
 
         }
-        if(Double.parseDouble(jObj.getString(infoContent[13]))>imdbRating){
-
-            }
+            if(Double.parseDouble(jObj.getString(infoContent[14]))<imdbRating){
+                imdbRating=Double.parseDouble(jObj.getString(infoContent[14]));
+                imdbResult=" and "+ jObj.getString(infoContent[0]) + "has the highest imdb rating with " + imdbRating;
 
         }
-        return metaResult;
+
+        }
+        System.out.println("Reutn values compareMovies "+metaResult+imdbResult);
+        return metaResult+imdbResult;
     }
 
     public void menuChoice(){
 
         System.out.println("1 - Find Movie");
         System.out.println("2 - Info about Movie");
-        System.out.println("2 - Compare Movies (Remember to find 2 Movies to compare )");
+        System.out.println("3 - Compare Movies (Remember to find 2 Movies to compare)");
+        System.out.println("0 - To Exit");
 
     }
     public void movieInfo(){
@@ -99,14 +111,19 @@ public class Client {
             System.out.println("Choose a movie first");
         }
     }
+
     public void addMovie(){
-        movieTitle=sc.nextLine();
+
+        System.out.println("Enter movie name");
+        Scanner mvsc=new Scanner(System.in);
+        movieTitle=mvsc.nextLine();
+
         try {
             unparsedJson.add(getHTML(this.movieTitle));
 
 
         }catch (Exception e){
-            System.out.println("getHtml error");
+            System.out.println("getHtml error ");
         }
     }
 
