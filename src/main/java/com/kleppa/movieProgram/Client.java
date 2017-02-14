@@ -12,6 +12,7 @@ import org.json.*;
 /**
  * Created by Kleppa on 14/02/2017.
  */
+// TODO: 14/02/2017 fix scanner bullshit, fix gethtml error
 public class Client {
 
     private ArrayList<JSONObject> jsonArr=new ArrayList<JSONObject>();
@@ -80,7 +81,7 @@ public class Client {
                 metaResult=jObj.getString(infoContent[0])+" has the highest metascore with " + metascore;
 
         }
-            if(Double.parseDouble(jObj.getString(infoContent[14]))<imdbRating){
+            if(Double.parseDouble(jObj.getString(infoContent[14]))>imdbRating){
                 imdbRating=Double.parseDouble(jObj.getString(infoContent[14]));
                 imdbResult=" and "+ jObj.getString(infoContent[0]) + "has the highest imdb rating with " + imdbRating;
 
@@ -126,5 +127,4 @@ public class Client {
             System.out.println("getHtml error ");
         }
     }
-
 }
