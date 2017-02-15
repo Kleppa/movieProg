@@ -17,13 +17,13 @@ public class Client {
 
     private ArrayList<JSONObject> jsonArr=new ArrayList<JSONObject>();
     private Scanner sc;
-    private String movieTitle=null;
+    private String movieTitle;
     private final String site="http://www.omdbapi.com/?";
     private ArrayList<String> unparsedJson=new ArrayList<String>();
     private String[] infoContent={"Title","Year","Rated","Released","Runtime", "Genre","Director","Writer",
     "Actors","Plot","Language","Country","Awards","Metascore","imdbRating","imdbVotes"};
     Client(){
-
+        sc = new Scanner(System.in);
 
         menu();
     }
@@ -45,7 +45,7 @@ public class Client {
     public void menu(){
         menuChoice();;
 
-        sc = new Scanner(System.in);
+
         int choice=99;
 
 
@@ -116,9 +116,9 @@ public class Client {
     public void addMovie(){
 
         System.out.println("Enter movie name");
-        Scanner mvsc=new Scanner(System.in);
-        movieTitle=mvsc.nextLine();
-
+        Scanner gs=new Scanner(System.in);
+        movieTitle=gs.nextLine();
+        System.out.println(movieTitle);
         try {
             unparsedJson.add(getHTML(this.movieTitle));
 
