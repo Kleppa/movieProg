@@ -12,7 +12,7 @@ import org.json.*;
 /**
  * Created by Kleppa on 14/02/2017.
  */
-// TODO: 14/02/2017 fix scanner bullshit, fix gethtml error
+// TODO: 16/02/2017 fix spaces in search for movie
 public class Client {
 
     private ArrayList<String> jsonArr=new ArrayList<String>();
@@ -51,7 +51,9 @@ public class Client {
             menuChoice();
 
             //problem with choice taking all the input
-            choice = sc.nextInt();
+            choice = Integer.parseInt(sc.nextLine());
+
+
             switch (choice) {
                 case 1:
                     addMovie();
@@ -112,7 +114,7 @@ public class Client {
     }
 
     public void menuChoice(){
-
+        System.out.println();
         System.out.println("1 - Find Movie");
         System.out.println("2 - Info about Movie");
         System.out.println("3 - Compare Movies (Remember to find 2 Movies to compare)");
@@ -128,23 +130,41 @@ public class Client {
             for (int i = 0; i < infoContent.length; i++) {
                 System.out.println(jsonObject.getString(infoContent[i]));
             }
+            System.out.println("\n\n");
+
         }else{
             System.out.println("Choose a movie first");
         }
     }
 
-    public void addMovie(){
+    public void addMovie() {
 
         System.out.println("Enter movie name");
-        Scanner gs=new Scanner(System.in);
-        movieTitle=gs.nextLine();
+        Scanner gs = new Scanner(System.in);
+        movieTitle = typeChecker(gs.nextLine());
 
         try {
             unparsedJson.add(getHTML(this.movieTitle));
             jsonArr.add(getHTML(this.movieTitle));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("getHtml error ");
         }
     }
+        @org.jetbrains.annotations.Contract(pure = true)
+        private String typeChecker(String movieRequest){
+            String improvedMovieRequest="";
+            for(char c: movieRequest.toCharArray()){
+
+               if(Character.isWhitespace(c)){
+                   improvedMovieRequest+="20%";
+               }else{
+                   improvedMovieRequest+=c;
+
+               }
+            }
+
+        return improvedMovieRequest;
+    }
+
 }
