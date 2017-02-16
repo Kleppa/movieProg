@@ -71,28 +71,44 @@ public class Client {
     }
 
     private String compareMovies() {
-        String metaResult="";
-        String imdbResult="";
+        String metaResult = "";
+        String imdbResult = "";
 
-        int metascore=0;
-        double imdbRating=0;
+        int metascore = 0;
+        double imdbRating = 0;
         // using string arraylist instead of jsonaObject list
-        for (String jObj:jsonArr) {
+        int i =0;
+        for (String jObj : jsonArr) {
 
-          if(Integer.parseInt(jObj.getString(infoContent[13]))>metascore){
-                metascore=Integer.parseInt(jObj.getString(infoContent[13]));
-                metaResult=jObj.getString(infoContent[0])+" has the highest metascore with " + metascore;
+            JSONObject tmpJson = new JSONObject(unparsedJson.get(i));
 
+            try {
+
+
+            if (tmpJson.getString(infoContent[13]).equalsIgnoreCase("N/A")) {
+                System.out.println(tmpJson.getString(infoContent[0]) + " Has no metascore");
+            } else if (Integer.parseInt(tmpJson.getString(infoContent[13])) > metascore) {
+
+                metascore = Integer.parseInt(tmpJson.getString(infoContent[13]));
+                metaResult = tmpJson.getString(infoContent[0]) + " has the highest metascore with " + metascore;
+
+                if (Double.parseDouble(tmpJson.getString(infoContent[14])) > imdbRating) {
+
+                    imdbRating = Double.parseDouble(tmpJson.getString(infoContent[14]));
+                    imdbResult = " and " + tmpJson.getString(infoContent[0]) + " has the highest imdb rating with " + imdbRating;
+
+                }
+
+
+            }
+
+        i++;
+        }catch (Exception e){
+                System.out.println(e.toString());
+            }
         }
-            if(Double.parseDouble(jObj.getString(infoContent[14]))>imdbRating){
-                imdbRating=Double.parseDouble(jObj.getString(infoContent[14]));
-                imdbResult=" and "+ jObj.getString(infoContent[0]) + "has the highest imdb rating with " + imdbRating;
-
-        }
-
-        }
-        System.out.println("Reutn values compareMovies "+metaResult+imdbResult);
-        return metaResult+imdbResult;
+        System.out.println(metaResult+imdbResult);
+        return metaResult + imdbResult;
     }
 
     public void menuChoice(){
@@ -103,11 +119,12 @@ public class Client {
         System.out.println("0 - To Exit");
 
     }
+
     public void movieInfo(){
             //get riktig index
         if(!unparsedJson.isEmpty()) {
             JSONObject jsonObject = new JSONObject(unparsedJson.get(0));
-            jsonArr.add(jsonObject);
+
             for (int i = 0; i < infoContent.length; i++) {
                 System.out.println(jsonObject.getString(infoContent[i]));
             }
@@ -124,7 +141,7 @@ public class Client {
 
         try {
             unparsedJson.add(getHTML(this.movieTitle));
-
+            jsonArr.add(getHTML(this.movieTitle));
 
         }catch (Exception e){
             System.out.println("getHtml error ");
