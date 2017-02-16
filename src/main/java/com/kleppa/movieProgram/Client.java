@@ -15,7 +15,7 @@ import org.json.*;
 // TODO: 14/02/2017 fix scanner bullshit, fix gethtml error
 public class Client {
 
-    private ArrayList<JSONObject> jsonArr=new ArrayList<JSONObject>();
+    private ArrayList<String> jsonArr=new ArrayList<String>();
     private Scanner sc;
     private String movieTitle;
     private final String site="http://www.omdbapi.com/?";
@@ -43,7 +43,7 @@ public class Client {
     }
 
     public void menu(){
-        menuChoice();;
+
 
 
         int choice=99;
@@ -51,6 +51,8 @@ public class Client {
 
         while(choice!=0) {
             System.out.println("Please enter a choice");
+            menuChoice();
+
             //problem with choice taking all the input
             choice = sc.nextInt();
             switch (choice) {
@@ -74,7 +76,8 @@ public class Client {
 
         int metascore=0;
         double imdbRating=0;
-        for (JSONObject jObj:jsonArr) {
+        // using string arraylist instead of jsonaObject list
+        for (String jObj:jsonArr) {
 
           if(Integer.parseInt(jObj.getString(infoContent[13]))>metascore){
                 metascore=Integer.parseInt(jObj.getString(infoContent[13]));
@@ -118,7 +121,7 @@ public class Client {
         System.out.println("Enter movie name");
         Scanner gs=new Scanner(System.in);
         movieTitle=gs.nextLine();
-        System.out.println(movieTitle);
+
         try {
             unparsedJson.add(getHTML(this.movieTitle));
 
