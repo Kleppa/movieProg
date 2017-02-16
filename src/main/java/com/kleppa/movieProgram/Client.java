@@ -44,10 +44,7 @@ public class Client {
 
     public void menu(){
 
-
-
         int choice=99;
-
 
         while(choice!=0) {
             System.out.println("Please enter a choice");
@@ -64,6 +61,9 @@ public class Client {
                     break;
                 case 3:
                     compareMovies();
+                    unparsedJson.clear();
+                    jsonArr.clear();
+
                     break;
             }
 
@@ -76,7 +76,7 @@ public class Client {
 
         int metascore = 0;
         double imdbRating = 0;
-        // using string arraylist instead of jsonaObject list
+
         int i =0;
         for (String jObj : jsonArr) {
 
